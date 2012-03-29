@@ -7,7 +7,7 @@ class ReminderMailer < Mailer
   def self.eval_mail_data
     [
         {
-            :user => User.find(1).login,
+            :user => 'admin',
             :projects => [
                 {
                     :project => 2,

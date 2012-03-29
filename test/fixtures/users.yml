@@ -1,0 +1,10 @@
+users_010:
+  id: 10
+  created_on: 2012-03-29 19:41:19 +03:00
+  status: 1
+  language: 'ru'
+  mail: miscuser10@foo.bar
+  lastname: Ivanov
+  firstname: Ivan
+  login: miscuser10
+  type: User
