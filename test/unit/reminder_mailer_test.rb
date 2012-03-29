@@ -13,6 +13,11 @@ class ReminderMailerTest < ActiveSupport::TestCase
     User.find(10)
   end
 
+  def test_get_notification_settings
+    assert_equal '1,3,5', User.find(10).reminder_notification
+    assert_equal [1,3,5], User.find(10).reminder_notification_array
+  end
+
   def test_simple
     expected =
         [

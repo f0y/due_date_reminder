@@ -1,4 +1,12 @@
 require 'redmine'
+require 'reminder/user_patch'
+require 'dispatcher'
+
+Dispatcher.to_prepare :redmine_private_wiki do
+  unless User.included_modules.include? Reminder::UserPatch
+    User.send(:include, Reminder::UserPatch)
+  end
+end
 
 Redmine::Plugin.register :redmine_reminder do
   name 'Redmine Reminder plugin'
