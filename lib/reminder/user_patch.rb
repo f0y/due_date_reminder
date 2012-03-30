@@ -12,6 +12,11 @@ module Reminder
       def reminder_notification_array
         reminder_notification.split(%r{[\s,]}).collect(&:to_i).select {|n| n > 0}.sort
       end
+
+      def reminder_notification
+        attr = read_attribute(:reminder_notification)
+        attr ||= Setting.reminder_notification
+      end
     end
   end
 end

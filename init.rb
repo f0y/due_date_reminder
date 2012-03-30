@@ -11,6 +11,7 @@ Dispatcher.to_prepare :redmine_private_wiki do
   unless Setting.included_modules.include? Reminder::SettingPatch
     Setting.send(:include, Reminder::SettingPatch)
   end
+  Reminder::SettingPatch.default_reminder_notification = '1,3'
 end
 
 Redmine::Plugin.register :redmine_reminder do
@@ -20,7 +21,4 @@ Redmine::Plugin.register :redmine_reminder do
   version '0.0.1'
   url 'https://github.com/f0y/redmine_reminder'
   author_url 'http://okandaurov.info'
-
-  Reminder::SettingPatch.default_reminder_notification = '1,3'
-
 end
