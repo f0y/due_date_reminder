@@ -3,7 +3,8 @@ module Reminder
     def self.included(base)
       base.send(:include, InstanceMethods)
       base.class_eval do
-        unloadable
+        # Same as typing in the class.
+        unloadable # Send unloadable so it will not be unloaded in development.
       end
     end
 
