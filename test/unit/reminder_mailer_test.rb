@@ -41,6 +41,12 @@ class ReminderMailerTest < ActiveSupport::TestCase
 
   end
 
+  context "user" do
+    should "include reminder notification to user safe attributes" do
+       assert_contains User.find(10).safe_attribute_names, 'reminder_notification'
+    end
+  end
+
   should "perform simple test" do
     expected =
         [
