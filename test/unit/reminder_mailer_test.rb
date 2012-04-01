@@ -18,7 +18,6 @@ class ReminderMailerTest < ActiveSupport::TestCase
   end
 
   context "reminder settings" do
-
     setup do
       Reminder::SettingPatch.default_reminder_notification = '1,2,3,4'
     end
@@ -28,7 +27,7 @@ class ReminderMailerTest < ActiveSupport::TestCase
     end
 
     should "convert settings to integer array" do
-      assert_equal [1,3,5], User.find(10).reminder_notification_array
+      assert_equal [1, 3, 5], User.find(10).reminder_notification_array
     end
 
     should "return default settings" do
@@ -43,8 +42,20 @@ class ReminderMailerTest < ActiveSupport::TestCase
 
   context "user" do
     should "include reminder notification to user safe attributes" do
-       assert_contains User.find(10).safe_attribute_names, 'reminder_notification'
+      assert_contains User.find(10).safe_attribute_names, 'reminder_notification'
     end
+
+    context "validation of reminder notification" do
+
+      should "not be valid" do
+        assert !(User.valid_reminder_notification? "test")
+      end
+
+      should "be valid" do
+        assert User.valid_reminder_notification? "1,2,33, 2,1  , 23"
+      end
+    end
+
   end
 
   should "perform simple test" do
@@ -65,6 +76,6 @@ class ReminderMailerTest < ActiveSupport::TestCase
                 ]
             }
         ]
-      assert_equal(expected, ReminderMailer.eval_mail_data)
+    assert_equal(expected, ReminderMailer.eval_mail_data)
   end
 end

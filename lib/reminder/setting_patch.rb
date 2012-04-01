@@ -5,7 +5,7 @@ module Reminder
     @@base_class = nil
 
     def self.default_reminder_notification=(value)
-      @@base_class.class_eval <<-"END_SRC"
+      @@base_class.class_eval <<-"END_SRC", __FILE__, __LINE__
             class_variable_get(:@@available_settings)['#{@@option_name}']['default'] = '#{value}'
       END_SRC
     end

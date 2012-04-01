@@ -6,6 +6,11 @@ module Reminder
         # Same as typing in the class.
         unloadable # Send unloadable so it will not be unloaded in development.
         safe_attributes 'reminder_notification'
+
+        def self.valid_reminder_notification?(value)
+          value =~ /\A(\d+[\s,]*)+\z/
+        end
+
       end
     end
 
@@ -18,6 +23,7 @@ module Reminder
         attr = read_attribute(:reminder_notification)
         attr ||= Setting.reminder_notification
       end
+
     end
   end
 end
