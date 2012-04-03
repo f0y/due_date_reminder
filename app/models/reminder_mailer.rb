@@ -39,13 +39,7 @@ class ReminderMailer < Mailer
     end
   end
 
-  def self.remind? (issue)
-    if !issue.assigned_to.nil? and
-        issue.assigned_to.reminder_notification_array.include?(issue.days_before_due_date)
-      return true
-    end
-    false
-  end
+
 
 
 end

@@ -1,6 +1,4 @@
 require File.dirname(__FILE__) + '/../test_helper'
-# Get fixtures from plugin directory
-Fixtures.create_fixtures(File.dirname(__FILE__) + '/../fixtures', 'users')
 require 'my_controller'
 
 # Re-raise errors caught by the controller.
@@ -18,7 +16,7 @@ class MyControllerTest < ActionController::TestCase
     setup do
       @controller = MyController.new
       @request = ActionController::TestRequest.new
-      @request.session[:user_id] = 10
+      @request.session[:user_id] = 1
       @response = ActionController::TestResponse.new
     end
 
@@ -26,12 +24,21 @@ class MyControllerTest < ActionController::TestCase
       post :account, :user => {
                :reminder_notification => '1,2,3,4'
            }
-      user = User.find(10)
+      user = User.find(1)
       assert_equal user, assigns(:user)
       assert_equal '1,2,3,4', user.reminder_notification
     end
 
-    should "render input field for reminder notification setting" do
+    should "render input field for default notification setting" do
+      Setting.plugin_redmine_reminder = {'reminder_notification' => '1,2,9'}
+      get :account
+      assert_tag :input, :attributes => {:name => 'user[reminder_notification]', :value => '1,2,9'}
+    end
+
+    should "render input field for user notification setting" do
+      user = User.find(1)
+      user.reminder_notification = '1,3,5'
+      user.save!
       get :account
       assert_tag :input, :attributes => {:name => 'user[reminder_notification]', :value => '1,3,5'}
     end
@@ -49,8 +56,8 @@ class MyControllerTest < ActionController::TestCase
       end
 
       should "not save new user attributes" do
-        user = User.find(10)
-        assert_equal 'Ivan', user.firstname
+        user = User.find(1)
+        assert_equal 'redMine', user.firstname
       end
     end
 

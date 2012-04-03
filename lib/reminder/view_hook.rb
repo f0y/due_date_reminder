@@ -13,7 +13,8 @@ module Reminder
     def view_my_account(context={})
       <<-SRC
       <p id='reminder_notification'>
-        #{context[:form].text_field :reminder_notification,:required => true, :size => 10}
+        #{context[:form].text_field :reminder_notification,:required => true, :size => 10,
+                                    :value => context[:user].reminder_notification}
         <br/>
         <em>#{label_tag :text_comma_separated}</em>
       </p>

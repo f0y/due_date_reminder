@@ -1,6 +1,5 @@
 require 'redmine'
 require 'reminder/user_patch'
-require 'reminder/setting_patch'
 require 'reminder/issue_patch'
 require 'reminder/my_controller_patch'
 require 'reminder/view_hook'
@@ -11,10 +10,6 @@ Dispatcher.to_prepare :redmine_private_wiki do
     User.send(:include, Reminder::UserPatch)
   end
 
-  unless Setting.included_modules.include? Reminder::SettingPatch
-    Setting.send(:include, Reminder::SettingPatch)
-  end
-
   unless Issue.included_modules.include? Reminder::IssuePatch
     Issue.send(:include, Reminder::IssuePatch)
   end
@@ -22,8 +17,6 @@ Dispatcher.to_prepare :redmine_private_wiki do
   unless MyController.included_modules.include? Reminder::MyControllerPatch
     MyController.send(:include, Reminder::MyControllerPatch)
   end
-
-  Reminder::SettingPatch.default_reminder_notification = '1,3'
 end
 
 Redmine::Plugin.register :redmine_reminder do
@@ -33,4 +26,5 @@ Redmine::Plugin.register :redmine_reminder do
   version '0.0.1'
   url 'https://github.com/f0y/redmine_reminder'
   author_url 'http://okandaurov.info'
+  settings :default => {'reminder_notification' => '1,3,5'}
 end

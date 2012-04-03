@@ -9,5 +9,13 @@ module Reminder
     def days_before_due_date
       (due_date - Date.today).to_i
     end
+
+    def remind?
+      if !assigned_to.nil? and
+          assigned_to.reminder_notification_array.include?(days_before_due_date)
+        return true
+      end
+      false
+    end
   end
 end
