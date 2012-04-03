@@ -1,6 +1,7 @@
 require 'redmine'
 require 'reminder/user_patch'
 require 'reminder/setting_patch'
+require 'reminder/issue_patch'
 require 'reminder/my_controller_patch'
 require 'reminder/view_hook'
 require 'dispatcher'
@@ -12,6 +13,10 @@ Dispatcher.to_prepare :redmine_private_wiki do
 
   unless Setting.included_modules.include? Reminder::SettingPatch
     Setting.send(:include, Reminder::SettingPatch)
+  end
+
+  unless Issue.included_modules.include? Reminder::IssuePatch
+    Issue.send(:include, Reminder::IssuePatch)
   end
 
   unless MyController.included_modules.include? Reminder::MyControllerPatch

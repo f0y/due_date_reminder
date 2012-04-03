@@ -1,4 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
+# Get fixtures from plugin directory
+Fixtures.create_fixtures(File.dirname(__FILE__) + '/../fixtures', 'users')
 
 class SettingTest < ActiveSupport::TestCase
   fixtures :users
