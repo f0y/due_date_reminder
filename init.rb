@@ -14,6 +14,10 @@ Dispatcher.to_prepare :redmine_private_wiki do
     Issue.send(:include, Reminder::IssuePatch)
   end
 
+  unless SettingsController.included_modules.include? Reminder::SettingsControllerPatch
+    SettingsController.send(:include, Reminder::SettingsControllerPatch)
+  end
+
   unless MyController.included_modules.include? Reminder::MyControllerPatch
     MyController.send(:include, Reminder::MyControllerPatch)
   end
@@ -26,5 +30,5 @@ Redmine::Plugin.register :redmine_reminder do
   version '0.0.1'
   url 'https://github.com/f0y/redmine_reminder'
   author_url 'http://okandaurov.info'
-  settings :default => {'reminder_notification' => '1,3,5'}
+  settings :default => {'reminder_notification' => '1,3,5'}, :partial => 'redmine_reminder/settings'
 end
