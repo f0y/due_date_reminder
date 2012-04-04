@@ -2,6 +2,7 @@ require 'redmine'
 require 'reminder/user_patch'
 require 'reminder/issue_patch'
 require 'reminder/my_controller_patch'
+require 'reminder/settings_controller_patch'
 require 'reminder/view_hook'
 require 'dispatcher'
 
@@ -30,5 +31,5 @@ Redmine::Plugin.register :redmine_reminder do
   version '0.0.1'
   url 'https://github.com/f0y/redmine_reminder'
   author_url 'http://okandaurov.info'
-  settings :default => {'reminder_notification' => '1,3,5'}, :partial => 'redmine_reminder/settings'
+  settings :default => {'reminder_notification' => '1,3,5'}, :partial => 'reminder/settings'
 end

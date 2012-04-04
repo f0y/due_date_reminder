@@ -1,0 +1,13 @@
+<%= l(:reminder_mail_body, :count => @count) %>:
+
+<% @projects.each do |project, issues| -%>
+
+    <%= "* #{project.name}" %>
+
+    <% issues.each do |issue| -%>
+        <%= "*** #{issue.tracker} ##{issue.id}: #{issue.subject}" %>
+    <% end -%>
+
+<% end -%>
+
+<%= @issues_url %>

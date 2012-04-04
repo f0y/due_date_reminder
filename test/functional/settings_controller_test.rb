@@ -19,6 +19,7 @@ class SettingsControllerTest < ActionController::TestCase
       @request = ActionController::TestRequest.new
       @response = ActionController::TestResponse.new
       @request.session[:user_id] = 1 # admin
+      Setting.clear_cache
     end
 
     should "render settings view" do

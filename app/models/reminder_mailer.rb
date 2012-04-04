@@ -1,45 +1,45 @@
 
 class ReminderMailer < Mailer
 
-  def self.send_notifications
-
+  def self.send_due_date_notification
+    data = {}
+    self.find_issues.each{ |issue| self.insert(data, issue)}
+    data.each do |user, projects|
+      deliver_due_date_notification(user, projects, issues.size)
+    end
   end
 
-  def self.eval_mail_data
+  def due_date_notification(user, projects, count)
+    set_language_if_valid user.language
+    recipients user.mail
+    subject l(:reminder_mail_subject, :count => count)
+    body :projects => projects,
+         :count => count,
+         :issues_url => url_for(:controller => 'issues', :action => 'index',
+                                :set_filter => 1, :assigned_to_id => user.id,
+                                :sort => 'due_date:asc')
+    render_multipart('due_date_notification', body)
+  end
+
+
+  def self.find_issues
     s = ARCondition.new ["#{IssueStatus.table_name}.is_closed = ?", false]
     s << "#{Issue.table_name}.due_date IS NOT NULL"
     s << "#{User.table_name}.status = #{User::STATUS_ACTIVE}"
     s << "#{Issue.table_name}.assigned_to_id IS NOT NULL"
     s << "#{Project.table_name}.status = #{Project::STATUS_ACTIVE}"
-    s << "#{Issue.table_name}.project_id IS NOT NULL"
-
-    issues = Issue.find(:all, :include => [:status, :assigned_to, :project, :tracker], :conditions => s.conditions)
-    remind_data = {}
-    overdue_data = {}
-    issues.each do |issue|
-      if self.remind? issue
-        self.insert_issue remind_data, issue
-      elsif issue.overdue?
-        self.insert_issue overdue_data, issue
-      end
-    end
-    self.sort_by_due_date(remind_data)
-    self.sort_by_due_date(overdue_data)
+    issues = Issue.find(:all, :include => [:status, :assigned_to, :project, :tracker],
+                        :conditions => s.conditions)
+    issues.reject!{|issue| not(issue.remind? or issue.overdue?)}
+    issues.sort!{|first, second| first.due_date <=> second.due_date}
   end
 
-  def self.insert_issue(data, issue)
+  private
+
+  def self.insert(data, issue)
     data[issue.assigned_to] ||= {}
     data[issue.assigned_to][issue.project] ||= []
     data[issue.assigned_to][issue.project] << issue
   end
-
-  def self.sort_by_due_date(data)
-    data.each do |user, project|
-      data[user][project].sort! { |first, second| first.due_date <=> second.due_date }
-    end
-  end
-
-
-
 
 end

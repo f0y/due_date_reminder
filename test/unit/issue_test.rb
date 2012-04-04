@@ -7,6 +7,7 @@ class IssueTest < ActiveRecord::TestCase
     issue = Issue.find(6)
     issue.assigned_to = User.find(1)
     issue.save
+    Setting.clear_cache
   end
 
   should "calculate days before due date" do
