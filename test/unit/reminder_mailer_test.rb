@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../test_helper'
-require '../../app/models/reminder_mailer'
+require File.dirname(__FILE__) + '/../../app/models/reminder_mailer'
 
 class ReminderMailerTest < ActiveSupport::TestCase
 
@@ -106,9 +106,8 @@ class ReminderMailerTest < ActiveSupport::TestCase
     should "send mails to users" do
       Mailer.perform_deliveries = true
       ReminderMailer.send_due_date_notifications
-      Mailer.deliveries.each do |mail|
-        puts mail
-      end
+      assert_equal 2, Mailer.deliveries.size
+
     end
 
     should "raise exception if no e-mail configuration presented" do
