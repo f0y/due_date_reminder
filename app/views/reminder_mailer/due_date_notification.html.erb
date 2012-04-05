@@ -2,10 +2,18 @@
 
 <% @projects.each do |project, issues| -%>
 
-    <%= "* #{project.name}" %>
+    <%= "#{project.name}" %>
 
     <% issues.each do |issue| -%>
-        <%= "*** #{issue.tracker} ##{issue.id}: #{issue.subject}" %>
+        <%
+           name = "#{issue.tracker} ##{issue.id}: #{issue.subject}"
+           if issue.overdue?
+             caption = "! #{l(:reminder_days_overdue, :days => issue.days_before_due_date.abs)}! #{name}"
+           else
+             caption = "** #{name} (#{l(:field_due_date)}: #{issue.due_date})"
+           end
+        -%>
+        <%= caption %>
     <% end -%>
 
 <% end -%>

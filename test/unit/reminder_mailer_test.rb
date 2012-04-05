@@ -1,12 +1,16 @@
 require File.dirname(__FILE__) + '/../test_helper'
+require '../../app/models/reminder_mailer'
 
 class ReminderMailerTest < ActiveSupport::TestCase
 
   context "reminder mailer" do
 
     setup do
-      Issue.find(3).delete
-
+      Mailer.perform_deliveries = false
+      begin
+        Issue.find(3).delete
+      rescue
+      end
       user = User.new(:firstname => 'Ivan', :lastname => 'Ivanov', :mail => 'ivan@example.net',
                       :status => User::STATUS_ACTIVE, :reminder_notification => '1,3')
       user.login = 'ivan'
@@ -100,7 +104,18 @@ class ReminderMailerTest < ActiveSupport::TestCase
     end
 
     should "send mails to users" do
+      Mailer.perform_deliveries = true
       ReminderMailer.send_due_date_notifications
+      Mailer.deliveries.each do |mail|
+        puts mail
+      end
+    end
+
+    should "raise exception if no e-mail configuration presented" do
+      Mailer.perform_deliveries = false
+      assert_raise NoMailConfiguration do
+        ReminderMailer.send_due_date_notifications
+      end
     end
 
   end
