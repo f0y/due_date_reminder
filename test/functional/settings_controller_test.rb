@@ -27,33 +27,33 @@ class SettingsControllerTest < ActionController::TestCase
     end
 
     should "render settings view" do
-      get :plugin, :id => 'redmine_reminder'
+      get :plugin, :id => 'due_date_reminder'
       assert :success
       assert_template 'plugin'
     end
 
     should "render notification settings" do
-      Setting.plugin_redmine_reminder = {'reminder_notification' => '1,2,3'}
-      get :plugin, :id => 'redmine_reminder'
+      Setting.plugin_due_date_reminder = {'reminder_notification' => '1,2,3'}
+      get :plugin, :id => 'due_date_reminder'
       assert_tag :input, :attributes => {:name => "settings[reminder_notification]", :value => '1,2,3'}
     end
 
     should "render default notification settings" do
-      get :plugin, :id => 'redmine_reminder'
+      get :plugin, :id => 'due_date_reminder'
       assert_tag :input, :attributes => {:name => "settings[reminder_notification]", :value => '1,3,5'}
     end
 
     should "save new value" do
-      Setting.plugin_redmine_reminder = {'reminder_notification' => '1,2,3'}
-      post :plugin, :id => 'redmine_reminder', :settings => {:reminder_notification => '1'}
-      assert_equal '1', Setting.plugin_redmine_reminder['reminder_notification']
+      Setting.plugin_due_date_reminder = {'reminder_notification' => '1,2,3'}
+      post :plugin, :id => 'due_date_reminder', :settings => {:reminder_notification => '1'}
+      assert_equal '1', Setting.plugin_due_date_reminder['reminder_notification']
     end
 
     context "incorrect user input" do
 
       setup do
-        Setting.plugin_redmine_reminder = {'reminder_notification' => '1,2,3'}
-        post :plugin, :id => 'redmine_reminder', :settings => {:reminder_notification => 'invalid'}
+        Setting.plugin_due_date_reminder = {'reminder_notification' => '1,2,3'}
+        post :plugin, :id => 'due_date_reminder', :settings => {:reminder_notification => 'invalid'}
       end
 
       should "send error message to view" do
@@ -61,7 +61,7 @@ class SettingsControllerTest < ActionController::TestCase
       end
 
       should "not save new value" do
-        assert_equal '1,2,3', Setting.plugin_redmine_reminder['reminder_notification']
+        assert_equal '1,2,3', Setting.plugin_due_date_reminder['reminder_notification']
       end
     end
   end

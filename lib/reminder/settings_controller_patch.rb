@@ -7,10 +7,10 @@ module Reminder
         before_filter :check_reminder_input, :only => :plugin
 
         def check_reminder_input
-          if request.post? and params[:id] == 'redmine_reminder' and
+          if request.post? and params[:id] == 'due_date_reminder' and
               !User.valid_reminder_notification?(params[:settings][:reminder_notification])
             flash[:error] = l(:error_reminder_notification_input)
-            return redirect_to :action => 'plugin', :id => 'redmine_reminder'
+            return redirect_to :action => 'plugin', :id => 'due_date_reminder'
           end
         end
       end

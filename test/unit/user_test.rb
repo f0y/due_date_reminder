@@ -39,7 +39,7 @@ class UserTest < ActiveSupport::TestCase
 
       should "return default settings for user" do
         @user.update_attributes(:reminder_notification => nil)
-        Setting.plugin_redmine_reminder = {'reminder_notification' => '1,2,3,4,5'}
+        Setting.plugin_due_date_reminder = {'reminder_notification' => '1,2,3,4,5'}
         assert_equal '1,2,3,4,5', @user.reminder_notification
       end
     end

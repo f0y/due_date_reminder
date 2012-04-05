@@ -6,7 +6,7 @@ require 'reminder/settings_controller_patch'
 require 'reminder/view_hook'
 require 'dispatcher'
 
-Dispatcher.to_prepare :redmine_private_wiki do
+Dispatcher.to_prepare :due_date_reminder do
   unless User.included_modules.include? Reminder::UserPatch
     User.send(:include, Reminder::UserPatch)
   end
@@ -24,12 +24,12 @@ Dispatcher.to_prepare :redmine_private_wiki do
   end
 end
 
-Redmine::Plugin.register :redmine_reminder do
-  name 'Redmine Reminder plugin'
+Redmine::Plugin.register :due_date_reminder do
+  name 'Due Date Reminder plugin'
   author 'Oleg Kandaurov'
   description 'Sends notifications about due date'
-  version '0.0.1'
-  url 'https://github.com/f0y/redmine_reminder'
+  version '0.1'
+  url 'https://github.com/f0y/due_date_reminder'
   author_url 'http://okandaurov.info'
   settings :default => {'reminder_notification' => '1,3,5'}, :partial => 'reminder/settings'
 end

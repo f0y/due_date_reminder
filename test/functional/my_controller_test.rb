@@ -34,7 +34,7 @@ class MyControllerTest < ActionController::TestCase
 
     should "render input field for default notification setting" do
       @user.update_attributes!(:reminder_notification => nil)
-      Setting.plugin_redmine_reminder = {'reminder_notification' => '1,2,9'}
+      Setting.plugin_due_date_reminder = {'reminder_notification' => '1,2,9'}
       get :account
       assert_tag :input, :attributes => {:name => 'user[reminder_notification]', :value => '1,2,9'}
     end

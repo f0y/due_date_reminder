@@ -21,7 +21,7 @@ module Reminder
 
       def reminder_notification
         attr = read_attribute(:reminder_notification)
-        attr ||= Setting.plugin_redmine_reminder['reminder_notification']
+        attr ||= Setting.plugin_due_date_reminder['reminder_notification']
       end
 
     end
