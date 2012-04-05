@@ -1,31 +1,38 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class IssueTest < ActiveRecord::TestCase
-  fixtures  :issues, :users
+  fixtures  :trackers, :projects, :projects_trackers
 
-  setup do
-    issue = Issue.find(6)
-    issue.assigned_to = User.find(1)
-    issue.save
-    Setting.clear_cache
+  context "issue" do
+    setup do
+      @user = User.new(:firstname => 'Ivan', :lastname => 'Ivanov', :mail => 'ivan@example.net',
+                      :status => User::STATUS_ACTIVE, :reminder_notification => '1,3')
+      @user.login = 'ivan'
+      @user.save!
+      @issue = Issue.create!(:assigned_to => @user, :subject => 'test', :project => Project.find(1),
+                    :tracker => Tracker.find(1), :author => @user,
+                    :due_date => 1.day.from_now.to_date.to_s(:db))
+    end
+
+    should "calculate days before due date" do
+      assert_equal 1, @issue.days_before_due_date
+    end
+
+    should "not remind if issue has no assignee" do
+      @issue.update_attributes!(:assigned_to => nil)
+      assert !@issue.remind?
+    end
+
+    should "remind in given day" do
+      assert @issue.remind?
+    end
+
+    should "not remind in other days" do
+      @issue.update_attributes!(:due_date => 2.days.from_now.to_date.to_s(:db))
+      assert !@issue.remind?
+    end
+
   end
 
-  should "calculate days before due date" do
-    assert_equal 1, Issue.find(6).days_before_due_date
-  end
-
-  should "not remind if issue has no assignee" do
-    assert !Issue.find(1).remind?
-  end
-
-  should "remind in given day" do
-    Setting.plugin_redmine_reminder = {'reminder_notification' => '1,3,5'}
-    assert Issue.find(6).remind?
-  end
-
-  should "not remind in other days" do
-    Setting.plugin_redmine_reminder = {'reminder_notification' => '3'}
-    assert !Issue.find(6).remind?
-  end
 
 end
