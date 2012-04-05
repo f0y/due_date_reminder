@@ -9,36 +9,37 @@ class MyController;
 end
 
 class MyControllerTest < ActionController::TestCase
-  fixtures :users
   include Redmine::I18n
 
   context "my controller" do
     setup do
+      @user = User.new(:firstname => 'Ivan', :lastname => 'Ivanov', :mail => 'ivan@example.net',
+                       :status => User::STATUS_ACTIVE, :reminder_notification => '1,3,5')
+      @user.login = 'ivan'
+      @user.admin = true
+      @user.save!
       @controller = MyController.new
       @request = ActionController::TestRequest.new
-      @request.session[:user_id] = 1
+      @request.session[:user_id] = @user.id
       @response = ActionController::TestResponse.new
     end
 
     should "save reminder notification settings" do
       post :account, :user => {
-               :reminder_notification => '1,2,3,4'
-           }
-      user = User.find(1)
-      assert_equal user, assigns(:user)
-      assert_equal '1,2,3,4', user.reminder_notification
+          :reminder_notification => '1,2,3,4'
+      }
+      assert_equal User.find(@user.id), assigns(:user)
+      assert_equal '1,2,3,4', User.find(@user.id).reminder_notification
     end
 
     should "render input field for default notification setting" do
+      @user.update_attributes!(:reminder_notification => nil)
       Setting.plugin_redmine_reminder = {'reminder_notification' => '1,2,9'}
       get :account
       assert_tag :input, :attributes => {:name => 'user[reminder_notification]', :value => '1,2,9'}
     end
 
     should "render input field for user notification setting" do
-      user = User.find(1)
-      user.reminder_notification = '1,3,5'
-      user.save!
       get :account
       assert_tag :input, :attributes => {:name => 'user[reminder_notification]', :value => '1,3,5'}
     end
@@ -47,8 +48,8 @@ class MyControllerTest < ActionController::TestCase
 
       setup do
         post :account, :user => {
-                 :firstname => 'new_name',
-                 :reminder_notification => 'invalid'}
+            :firstname => 'new_name',
+            :reminder_notification => 'invalid'}
       end
 
       should "send error message to view" do
@@ -56,8 +57,7 @@ class MyControllerTest < ActionController::TestCase
       end
 
       should "not save new user attributes" do
-        user = User.find(1)
-        assert_equal 'redMine', user.firstname
+        assert_equal 'Ivan', @user.firstname
       end
     end
 

@@ -9,16 +9,20 @@ class SettingsController;
 end
 
 class SettingsControllerTest < ActionController::TestCase
-  fixtures :users
   include Redmine::I18n
 
   context "settings controller" do
 
     setup do
+      @user = User.new(:firstname => 'Ivan', :lastname => 'Ivanov', :mail => 'ivan@example.net',
+                       :status => User::STATUS_ACTIVE, :reminder_notification => '1,3,5')
+      @user.login = 'ivan'
+      @user.admin = true
+      @user.save!
       @controller = SettingsController.new
       @request = ActionController::TestRequest.new
       @response = ActionController::TestResponse.new
-      @request.session[:user_id] = 1 # admin
+      @request.session[:user_id] = @user.id
       Setting.clear_cache
     end
 

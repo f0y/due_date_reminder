@@ -1,20 +1,19 @@
-
 class ReminderMailer < Mailer
 
-  def self.send_due_date_notification
+  def self.send_due_date_notifications
     data = {}
-    self.find_issues.each{ |issue| self.insert(data, issue)}
+    issues = self.find_issues
+    issues.each { |issue| self.insert(data, issue) }
     data.each do |user, projects|
-      deliver_due_date_notification(user, projects, issues.size)
+      deliver_due_date_notification(user, projects)
     end
   end
 
-  def due_date_notification(user, projects, count)
+  def due_date_notification(user, projects)
     set_language_if_valid user.language
     recipients user.mail
-    subject l(:reminder_mail_subject, :count => count)
+    subject l(:reminder_mail_subject)
     body :projects => projects,
-         :count => count,
          :issues_url => url_for(:controller => 'issues', :action => 'index',
                                 :set_filter => 1, :assigned_to_id => user.id,
                                 :sort => 'due_date:asc')
@@ -30,8 +29,8 @@ class ReminderMailer < Mailer
     s << "#{Project.table_name}.status = #{Project::STATUS_ACTIVE}"
     issues = Issue.find(:all, :include => [:status, :assigned_to, :project, :tracker],
                         :conditions => s.conditions)
-    issues.reject!{|issue| not(issue.remind? or issue.overdue?)}
-    issues.sort!{|first, second| first.due_date <=> second.due_date}
+    issues.reject! { |issue| not (issue.remind? or issue.overdue?) }
+    issues.sort! { |first, second| first.due_date <=> second.due_date }
   end
 
   private

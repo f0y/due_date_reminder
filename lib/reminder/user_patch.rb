@@ -16,7 +16,7 @@ module Reminder
 
     module InstanceMethods
       def reminder_notification_array
-        reminder_notification.split(%r{[\s,]}).collect(&:to_i).select {|n| n > 0}.sort
+        reminder_notification.split(%r{[\s,]}).collect(&:to_i).select { |n| n > 0 }.sort
       end
 
       def reminder_notification

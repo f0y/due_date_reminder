@@ -1,25 +1,22 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ReminderMailerTest < ActiveSupport::TestCase
-  fixtures  :issue_statuses
 
   context "reminder mailer" do
 
     setup do
-      issue = Issue.find(3)
-      issue.due_date = nil
-      issue.save!
+      Issue.find(3).delete
 
-      user = User.new(:firstname => 'Ivan', :lastname => 'Ivanov',:mail => 'ivan@example.net',
+      user = User.new(:firstname => 'Ivan', :lastname => 'Ivanov', :mail => 'ivan@example.net',
                       :status => User::STATUS_ACTIVE, :reminder_notification => '1,3')
       user.login = 'ivan'
       user.save!
-      user2 = User.new(:firstname => 'Petr', :lastname => 'Petrovich',:mail => 'petr@example.net',
-                      :status => User::STATUS_ACTIVE, :reminder_notification => '5,9')
+      user2 = User.new(:firstname => 'Petr', :lastname => 'Petrovich', :mail => 'petr@example.net',
+                       :status => User::STATUS_ACTIVE, :reminder_notification => '5,9')
       user2.login = 'petr'
       user2.save!
 
-      inactive_user = User.new(:firstname => 'Alex', :lastname => 'Alexandrov',:mail => 'alex@example.net',
+      inactive_user = User.new(:firstname => 'Alex', :lastname => 'Alexandrov', :mail => 'alex@example.net',
                                :status => User::STATUS_LOCKED)
       inactive_user.login = 'alex'
       inactive_user.save!
@@ -41,7 +38,7 @@ class ReminderMailerTest < ActiveSupport::TestCase
 
       # Active user, active project but CLOSED ISSUE
       closed_issue = Issue.new(:assigned_to => user, :subject => 'subject12', :project => project,
-                    :tracker => Tracker.find(1), :author => user, :due_date => 1.day.ago)
+                               :tracker => Tracker.find(1), :author => user, :due_date => 1.day.ago)
       closed_issue.status = IssueStatus.find(5)
       closed_issue.save!
 
@@ -93,13 +90,17 @@ class ReminderMailerTest < ActiveSupport::TestCase
 
     should "return issues" do
       issues = ReminderMailer.find_issues
-      issues.each {|issue| assert_match /^subject\d$/, issue.subject}
+      issues.each { |issue| assert_match /^subject\d$/, issue.subject }
       assert_equal 8, issues.count
     end
 
     should "return issues in valid order" do
       issues = ReminderMailer.find_issues
-      issues.each_with_index {|issue, index| assert_match /^subject#{index}$/, issue.subject}
+      issues.each_with_index { |issue, index| assert_match /^subject#{index}$/, issue.subject }
+    end
+
+    should "send mails to users" do
+      ReminderMailer.send_due_date_notifications
     end
 
   end
