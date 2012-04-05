@@ -10,7 +10,7 @@
    if issue.overdue?
      caption = "! #{l(:reminder_days_overdue, :days => issue.days_before_due_date.abs)}! #{name}"
    else
-     caption = "** #{name} (#{l(:field_due_date)}: #{issue.due_date})"
+     caption = "* #{name} (#{l(:field_due_date)}: #{issue.due_date})"
    end
 -%>
   <%= caption %>
