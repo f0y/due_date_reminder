@@ -2,8 +2,8 @@
 
 Plugin for Redmine project that sends notification to assignee if due date is coming.
 
-Users can choose in which days before due date they want to be notified.
-This setting located at user account page. Moreover, administrator can set default
+Users can choose on which days before due date they want to be notified.
+This setting is located at the user account page. Moreover, administrator can set default
 notification settings for new users.
 
 Plugin also sends info about issues behind a schedule. Users cannot change this behavior.
