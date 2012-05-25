@@ -16,7 +16,7 @@ Plugin also sends info about issues behind a schedule. Users cannot change this 
 == Sending notifications
 You can send notifications manually:
  cd /home/user/path_to_you_app
- rake reminder:reminder_plugin:send_notifications RAILS_ENV=production
+ rake redmine:reminder_plugin:send_notifications RAILS_ENV=production
 
 It is good idea to add the task to cron:
  crontab -e
