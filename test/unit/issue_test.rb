@@ -32,6 +32,11 @@ class IssueTest < ActiveRecord::TestCase
       assert !@issue.remind?
     end
 
+    should "not remind if assignee is a group" do
+      @issue.assigned_to = Group.create!(:lastname => "group")
+      assert !@issue.remind?
+    end
+
   end
 
 
