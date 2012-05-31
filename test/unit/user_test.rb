@@ -1,14 +1,11 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class UserTest < ActiveSupport::TestCase
-
+  include FactoryGirl::Syntax::Methods
   context "user" do
 
     setup do
-      @user = User.new(:firstname => 'Ivan', :lastname => 'Ivanov', :mail => 'ivan@example.net',
-                       :status => User::STATUS_ACTIVE, :reminder_notification => '1,3,5')
-      @user.login = 'ivan'
-      @user.save!
+      @user = create(:user, :reminder_notification => '1,3,5')
     end
 
 

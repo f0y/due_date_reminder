@@ -1,30 +1,31 @@
 class NoMailConfiguration < RuntimeError;
 end
 
+
 class ReminderMailer < Mailer
   include Redmine::I18n
 
-  def self.send_due_date_notifications
-    unless Mailer.perform_deliveries
+  prepend_view_path "#{Redmine::Plugin.find("due_date_reminder").directory}/app/views"
+
+  def self.due_date_notifications
+    unless ActionMailer::Base.perform_deliveries
       raise NoMailConfiguration.new(l(:text_email_delivery_not_configured))
     end
     data = {}
     issues = self.find_issues
     issues.each { |issue| self.insert(data, issue) }
     data.each do |user, projects|
-      deliver_due_date_notification(user, projects)
+      due_date_notification(user, projects).deliver
     end
   end
 
   def due_date_notification(user, projects)
     set_language_if_valid user.language
-    recipients user.mail
-    subject l(:reminder_mail_subject)
-    body :projects => projects,
-         :issues_url => url_for(:controller => 'issues', :action => 'index',
-                                :set_filter => 1, :assigned_to_id => user.id,
-                                :sort => 'due_date:asc')
-    render_multipart('due_date_notification', body)
+    @projects = projects
+    @issues_url = url_for(:controller => 'issues', :action => 'index',
+                          :set_filter => 1, :assigned_to_id => user.id,
+                          :sort => 'due_date:asc')
+    mail :to => user.mail, :subject => l(:reminder_mail_subject)
   end
 
 
