@@ -1,4 +1,5 @@
-class NoMailConfiguration < RuntimeError; end
+class NoMailConfiguration < RuntimeError;
+end
 
 class ReminderMailer < Mailer
   include Redmine::I18n
@@ -28,13 +29,12 @@ class ReminderMailer < Mailer
 
 
   def self.find_issues
-    s = ARCondition.new ["#{IssueStatus.table_name}.is_closed = ?", false]
-    s << "#{Issue.table_name}.due_date IS NOT NULL"
-    s << "#{User.table_name}.status = #{User::STATUS_ACTIVE}"
-    s << "#{Issue.table_name}.assigned_to_id IS NOT NULL"
-    s << "#{Project.table_name}.status = #{Project::STATUS_ACTIVE}"
-    issues = Issue.find(:all, :include => [:status, :assigned_to, :project, :tracker],
-                        :conditions => s.conditions)
+    scope = Issue.open.scoped(:conditions => ["#{Issue.table_name}.assigned_to_id IS NOT NULL" +
+                                                  " AND #{Project.table_name}.status = #{Project::STATUS_ACTIVE}" +
+                                                  " AND #{Issue.table_name}.due_date IS NOT NULL" +
+                                                  " AND #{User.table_name}.status = #{User::STATUS_ACTIVE}"]
+    )
+    issues = scope.all(:include => [:status, :assigned_to, :project, :tracker])
     issues.reject! { |issue| not (issue.remind? or issue.overdue?) }
     issues.sort! { |first, second| first.due_date <=> second.due_date }
   end
