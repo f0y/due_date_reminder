@@ -105,6 +105,7 @@ class ReminderMailerTest < ActiveSupport::TestCase
 
     should "send mails to users" do
       Mailer.perform_deliveries = true
+      Mailer.deliveries = []
       ReminderMailer.send_due_date_notifications
       assert_equal 2, Mailer.deliveries.size
 
