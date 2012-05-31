@@ -7,6 +7,7 @@ require 'reminder/view_hook'
 require 'dispatcher'
 
 Dispatcher.to_prepare :due_date_reminder do
+  require 'user'
   unless User.included_modules.include? Reminder::UserPatch
     User.send(:include, Reminder::UserPatch)
   end
