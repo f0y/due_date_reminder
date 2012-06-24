@@ -16,17 +16,17 @@ http://www.redmine.org/plugins/due_date_reminder
 
 ## Compatibility
 
-There are two versions of the plugin:
-* 0.1.x for Redmine 1.3.x
-* 0.2.x for Redmine 1.4.x
-* 0.3.x for Redmine 2.0.x and higher
+There are a few versions of the plugin:
+* redmine-1.3 for Redmine 1.3.x
+* redmine-1.4 for Redmine 1.4.x
+* redmine-2.0 for Redmine 2.0.x and higher
 
 ## Installation
 
     cd /home/user/path_to_you_app/
     git clone git://github.com/f0y/due_date_reminder.git plugins/due_date_reminder
-    git checkout v0.3.1
-    rake redmine:plugins:migrate RAILS_ENV=production
+    cd plugins/due_date_reminder; git checkout <YOUR BRANCH HERE - see above>
+    bundle exec rake redmine:plugins:migrate RAILS_ENV=production
 
 Also you can read instructions on http://www.redmine.org/projects/redmine/wiki/Plugins
 
@@ -34,12 +34,12 @@ Also you can read instructions on http://www.redmine.org/projects/redmine/wiki/P
 You can send notifications manually:
 
     cd /home/user/path_to_you_app
-    rake redmine:reminder_plugin:send_notifications RAILS_ENV=production
+    bundle exec rake redmine:reminder_plugin:send_notifications RAILS_ENV=production
 
 It is good idea to add the task to cron:
 
     crontab -e
-    0 5 * * * cd /home/user/path_to_you_app && rake redmine:reminder_plugin:send_notifications RAILS_ENV=production &> /tmp/redmine_due_date_reminder.log
+    0 5 * * * cd /home/user/path_to_you_app && bundle exec rake redmine:reminder_plugin:send_notifications RAILS_ENV=production &> /tmp/redmine_due_date_reminder.log
 
 Learn more about cron at http://en.wikipedia.org/wiki/Cron
 
