@@ -1,0 +1,8 @@
+﻿pl:
+  reminder_default_notification_settings: "Domyślne ustawienia powiadamiania"
+  field_reminder_notification: "Przypomnij o zagadnieniach w tych dniach"
+  error_reminder_notification_input: "Błędne dane. Musisz podać wartości oddzielane przecinkami"
+  reminder_mail_subject: "Reminder: Masz zagadnienia z terminem oddania"
+  reminder_mail_body: "Zagadnienia przypisane do Ciebie, dla których upłynął lub niedługo upływa termin oddania"
+  reminder_days_overdue: "%{days} dzień(dni) spóźnienia"
+
