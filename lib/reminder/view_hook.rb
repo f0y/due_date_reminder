@@ -5,7 +5,7 @@ module Reminder
         <<-SRC
         <script type='text/javascript'>
           $('no_self_notified').up(2).insert({bottom:$('reminder_notification')})
-        </script>"
+        </script>
         SRC
       end
     end
