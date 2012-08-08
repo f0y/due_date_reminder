@@ -1,0 +1,7 @@
+fr:
+  reminder_default_notification_settings: "Paramètres de notification par défaut"
+  field_reminder_notification: "Me rappeler les tâches à ces jours"
+  error_reminder_notification_input: "Saisie incorrecte. Vous devez entrer des valeurs séparées par des virgules."
+  reminder_mail_subject: "Rappel : Vous avez des tâches avec échéance"
+  reminder_mail_body: "Tâches qui vous sont affectées qui ont une échéance "
+  reminder_days_overdue: "Dépassée de %{days} jour(s) "
