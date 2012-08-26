@@ -6,6 +6,7 @@ class IssueTest < ActiveRecord::TestCase
 
   context "issue" do
     setup do
+      ActionMailer::Base.perform_deliveries = false
       @user = create(:user, :reminder_notification => '1,3')
       @issue = create(:issue, :assigned_to => @user, :due_date => 1.day.from_now.to_date.to_s(:db))
     end
