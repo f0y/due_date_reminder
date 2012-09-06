@@ -26,6 +26,13 @@ There are a few versions of the plugin:
     cd /home/user/path_to_you_app/
     git clone git://github.com/f0y/due_date_reminder.git plugins/due_date_reminder
     cd plugins/due_date_reminder; git checkout <YOUR BRANCH HERE - see above>
+
+For Redmine 1.3.x and Redmine 1.4.x
+
+    bundle exec rake db:migrate_plugins RAILS_ENV=production
+
+For Redmine 2.x and higher
+
     bundle exec rake redmine:plugins:migrate RAILS_ENV=production
 
 Also you can read instructions on http://www.redmine.org/projects/redmine/wiki/Plugins
