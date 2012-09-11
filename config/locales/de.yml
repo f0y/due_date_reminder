@@ -3,6 +3,6 @@ de:
   reminder_default_notification_settings: "Standard Benachrichtigungs-Einstellungen"
   field_reminder_notification: "Erinnere mich an Tickets an folgenden Tagen zuvor"
   error_reminder_notification_input: "Fehlerhafte Eingabe. Geben sie komma-getrennte Werte ein."
-  reminder_mail_subject: "Erinnerung: Sie haben Tickets mit Abgabedatum"
+  reminder_mail_subject: "Erinnerung: Sie haben Tickets mit (bald) fälligem Abgabedatum"
   reminder_mail_body: "Ihnen zugewiesene Tickets mit (bald) fälligem Abgabedatum"
   reminder_days_overdue: "%{days} Tag(e) abgelaufen"
