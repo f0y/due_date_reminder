@@ -61,5 +61,10 @@ class MyControllerTest < ActionController::TestCase
       end
     end
 
+    should "internationalize text_comma_separated" do
+      get :account
+      assert_tag :tag => "label", :attributes => {:for => 'text_comma_separated'}, :content => l(:text_comma_separated)
+    end
+
   end
 end
