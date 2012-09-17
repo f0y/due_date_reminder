@@ -1,25 +1,25 @@
 require 'redmine'
-require 'reminder/user_patch'
-require 'reminder/issue_patch'
-require 'reminder/my_controller_patch'
-require 'reminder/settings_controller_patch'
-require 'reminder/view_hook'
-require 'dispatcher'
+require_dependency 'reminder/view_hook'
 
-Dispatcher.to_prepare :due_date_reminder do
-  require 'user'
+Rails.configuration.to_prepare do
+  require_dependency 'project'
+  require_dependency 'principal'
+  require_dependency 'user'
   unless User.included_modules.include? Reminder::UserPatch
     User.send(:include, Reminder::UserPatch)
   end
 
+  require_dependency 'issue'
   unless Issue.included_modules.include? Reminder::IssuePatch
     Issue.send(:include, Reminder::IssuePatch)
   end
 
+  require_dependency 'settings_controller'
   unless SettingsController.included_modules.include? Reminder::SettingsControllerPatch
     SettingsController.send(:include, Reminder::SettingsControllerPatch)
   end
 
+  require_dependency 'my_controller'
   unless MyController.included_modules.include? Reminder::MyControllerPatch
     MyController.send(:include, Reminder::MyControllerPatch)
   end
@@ -29,7 +29,7 @@ Redmine::Plugin.register :due_date_reminder do
   name 'Due Date Reminder plugin'
   author 'Oleg Kandaurov'
   description 'Sends notifications about due date'
-  version '0.1.1'
+  version '0.3.1'
   url 'https://github.com/f0y/due_date_reminder'
   author_url 'http://okandaurov.info'
   settings :default => {'reminder_notification' => '1,3,5'}, :partial => 'reminder/settings'

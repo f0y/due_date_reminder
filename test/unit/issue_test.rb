@@ -2,16 +2,13 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class IssueTest < ActiveRecord::TestCase
   fixtures :trackers, :projects, :projects_trackers
+  include FactoryGirl::Syntax::Methods
 
   context "issue" do
     setup do
-      @user = User.new(:firstname => 'Ivan', :lastname => 'Ivanov', :mail => 'ivan@example.net',
-                       :status => User::STATUS_ACTIVE, :reminder_notification => '1,3')
-      @user.login = 'ivan'
-      @user.save!
-      @issue = Issue.create!(:assigned_to => @user, :subject => 'test', :project => Project.find(1),
-                             :tracker => Tracker.find(1), :author => @user,
-                             :due_date => 1.day.from_now.to_date.to_s(:db))
+      ActionMailer::Base.perform_deliveries = false
+      @user = create(:user, :reminder_notification => '1,3')
+      @issue = create(:issue, :assigned_to => @user, :due_date => 1.day.from_now.to_date.to_s(:db))
     end
 
     should "calculate days before due date" do

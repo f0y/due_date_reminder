@@ -1,0 +1,13 @@
+Autotest.add_hook :initialize do |autotest|
+  %w{.git db assets autotest config coverage}.each do
+  |exception| autotest.add_exception(exception)
+  end
+
+  autotest.add_mapping %r%/^lib/reminder/(.*)_patch\.rb$% do |_, m|
+    name = File.basename(m[1])
+    files_matching %r%^test/.*(#{name}_test)\.rb$%
+  end
+
+
+end
+require 'autotest/timestamp'
