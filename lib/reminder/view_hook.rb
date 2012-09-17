@@ -4,7 +4,7 @@ module Reminder
       if context[:controller] && (context[:controller].is_a?(MyController))
         <<-SRC
         <script type='text/javascript'>
-          $('no_self_notified').up(2).insert({bottom:$('reminder_notification')})
+          $('#no_self_notified').parent().parent().append($('#reminder_notification'));
         </script>
         SRC
       end
