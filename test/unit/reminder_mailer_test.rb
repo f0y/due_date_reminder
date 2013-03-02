@@ -9,7 +9,6 @@ class ReminderMailerTest < ActiveSupport::TestCase
 
     setup do
       ActionMailer::Base.perform_deliveries = false
-      Issue.find(3).delete
       user = create(:user, :reminder_notification => '1,3')
       user2 = create(:user, :reminder_notification => '5,9')
       inactive_user = create(:user, :status => User::STATUS_LOCKED)
@@ -30,8 +29,7 @@ class ReminderMailerTest < ActiveSupport::TestCase
 
       # Active user, active project but CLOSED ISSUE
       closed_issue = create(:issue, :assigned_to => user, :subject => 'subject12', :project => project,
-                            :due_date => 1.day.ago)
-      closed_issue.update_attribute(:status, IssueStatus.find(5))
+                            :due_date => 1.day.ago, :status => create(:issue_status, :is_closed => true))
 
       # Active user, active project but NO DUE DATE
       create(:issue, :assigned_to => user, :subject => 'subject13', :project => project,)
