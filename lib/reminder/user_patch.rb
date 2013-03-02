@@ -8,7 +8,7 @@ module Reminder
         safe_attributes 'reminder_notification'
 
         def self.valid_reminder_notification?(value)
-          value =~ /(\A(\d+[\s,]*)+\z)|(\s*)/
+          value =~ /^(\A(\d+[\s,]*)+\z)|(\s)$/
         end
 
       end
