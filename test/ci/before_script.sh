@@ -1,21 +1,21 @@
 #!/bin/sh
 
-# Disable authenticity checking for github.com
-echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
 # Git repo of the Redmine
 
 # Prepare Redmine
 git clone --depth=100 $MAIN_REPO $TARGET_DIR
 cd $TARGET_DIR
+git checkout 2.3-stable
 #git submodule update --init --recursive
 
 # Copy over the already downloaded plugin 
-cp -r ~/builds/*/$REPO_NAME vendor/plugins/$PLUGIN_DIR
+cp -r $CI_HOME plugins/$REPO_NAME
+
+cp -r $TARGET_DIR/config/database.yml.example $TARGET_DIR/config/database.yml
 
 #export BUNDLE_GEMFILE=$TARGET_DIR/Gemfile
 
-bundle install --without=$BUNDLE_WITHOUT
+bundle install --without=$BUNDLE_WITHOUT RAILS_ENV=test
 
 echo "creating $DB database"
 case $DB in
@@ -40,7 +40,7 @@ EOF
     ;;
   "postgres" )
     psql -c 'create database redmine_test;' -U postgres
-    cat > config/database.yml << EOF
+    cat > $TARGER_DIR/config/database.yml << EOF
 test:
   adapter: postgresql
   database: redmine_test
@@ -49,5 +49,4 @@ EOF
     ;;
 esac
 
-bundle exec rake db:migrate
-bundle exec rake db:migrate:plugins
+bundle exec rake db:drop db:create db:migrate redmine:load_default_data redmine:plugins:migrate RAILS_ENV=test REDMINE_LANG=en

@@ -7,15 +7,16 @@ gemfile: non-existent-gemfile
 
 before_install:
   # Git repo of the Redmine
-  - export MAIN_REPO="git@github.com:redmine/redmine.git"
+  - export MAIN_REPO="git://github.com/redmine/redmine.git"
   # Name of your plugin's repo
   - export REPO_NAME=due_date_reminder
   # Plugin's name/directory
   - export PLUGIN_NAME=$REPO_NAME
+  - export USER_NAME=f0y
   - export TARGET_DIR="$HOME/redmine"
+  - export CI_HOME=$HOME/build/$USER_NAME/$REPO_NAME
 before_script: "./test/ci/before_script.sh"
 script: "./test/ci/script.sh"
 
 env:
   - "DB=mysql2 BUNDLE_WITHOUT=rmagick:mysql:postgres:sqlite"
-  - "DB=postgres BUNDLE_WITHOUT=rmagick:mysql:mysql2:sqlite"

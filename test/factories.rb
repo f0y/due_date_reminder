@@ -18,7 +18,7 @@ FactoryGirl.define do
     tracker_id 1
     association :status, factory: :issue_status
     association :priority, factory: :issue_priority
-    author_id 1
+    association :author, factory: :user
     project_id 1
     subject "subject"
   end
