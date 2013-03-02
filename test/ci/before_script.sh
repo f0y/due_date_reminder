@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Disable authenticity checking for github.com
+echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
 # Git repo of the Redmine
 
 # Prepare Redmine
