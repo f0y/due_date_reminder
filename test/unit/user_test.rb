@@ -22,12 +22,22 @@ class UserTest < ActiveSupport::TestCase
       should "be valid" do
         assert User.valid_reminder_notification? "1,2,33, 2,1  , 23"
       end
+
+      should "be valid if empty" do
+        assert User.valid_reminder_notification? "    "
+      end
+
     end
 
     context "reminder settings" do
 
       should "return setting explicitly defined for user" do
         assert_equal '1,3,5', @user.reminder_notification
+      end
+
+      should "return setting empty settings" do
+        @user.update_attributes(:reminder_notification => "   ")
+        assert_equal [], @user.reminder_notification_array
       end
 
       should "convert settings to integer array" do

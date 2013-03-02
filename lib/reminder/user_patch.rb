@@ -8,7 +8,7 @@ module Reminder
         safe_attributes 'reminder_notification'
 
         def self.valid_reminder_notification?(value)
-          value =~ /\A(\d+[\s,]*)+\z/
+          value =~ /(\A(\d+[\s,]*)+\z)|(\s*)/
         end
 
       end
@@ -16,7 +16,10 @@ module Reminder
 
     module InstanceMethods
       def reminder_notification_array
-        reminder_notification.split(%r{[\s,]}).collect(&:to_i).select { |n| n >= 0 }.sort
+        unless reminder_notification.blank?
+          return reminder_notification.split(%r{[\s,]}).collect(&:to_i).select { |n| n >= 0 }.sort
+        end
+        []
       end
 
       def reminder_notification
