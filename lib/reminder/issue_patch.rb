@@ -11,7 +11,7 @@ module Reminder
     end
 
     def remind?
-      if !assigned_to.nil? and assigned_to.is_a?(User) and
+      if !assigned_to.nil? and assigned_to.is_a?(User)
           return assigned_to.reminder_notification_array.include?(days_before_due_date)
       end
       false

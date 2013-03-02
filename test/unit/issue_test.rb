@@ -26,7 +26,7 @@ class IssueTest < ActiveRecord::TestCase
 
     should "not remind in other days" do
       # Seems to be an issue with time zone
-      @issue.update_attributes!(:due_date => 5.days.from_now.to_date)
+      @issue.update_attributes!(:due_date => 5.days.from_now.to_date.to_s(:db))
       assert !@issue.remind?
     end
 
