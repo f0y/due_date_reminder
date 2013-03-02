@@ -5,7 +5,7 @@
 # Prepare Redmine
 git clone --depth=100 $MAIN_REPO $TARGET_DIR
 cd $TARGET_DIR
-git checkout 2.3-stable
+git checkout $BRANCH
 #git submodule update --init --recursive
 
 # Copy over the already downloaded plugin 
