@@ -90,10 +90,10 @@ class ReminderMailerTest < ActiveSupport::TestCase
     should "send mails to users" do
       #Test fails because of invalid e-mail configuration
 
-      #ActionMailer::Base.deliveries.clear
-      #ActionMailer::Base.perform_deliveries = true
-      #ReminderMailer.due_date_notifications
-      #assert_equal 2, ActionMailer::Base.deliveries.size
+      ActionMailer::Base.deliveries.clear
+      ActionMailer::Base.perform_deliveries = true
+      ReminderMailer.due_date_notifications
+      assert_equal 2, ActionMailer::Base.deliveries.size
     end
 
     should "raise exception if e-mail delivery is not configured" do
