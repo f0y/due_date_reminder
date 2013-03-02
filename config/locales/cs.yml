@@ -4,5 +4,5 @@ cs:
   error_reminder_notification_input: "Špatné zadání, hodnoty musí být odděleny čárkami."
   reminder_mail_subject: "Připomínka: Máte úkoly, kterým se blíží konečný termín vyřízení."
   reminder_mail_body: "Vaše úkoly, kterým se blíží termín vyřízení"
-  reminder_days_overdue: "Spoždění ve dnech - %{days}"
+  reminder_days_overdue: "Zpoždění ve dnech - %{days}"
 
