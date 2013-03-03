@@ -5,4 +5,5 @@ en:
   reminder_mail_subject: "Reminder: You have issues with due dates"
   reminder_mail_body: "Issues assigned to you that have due dates"
   reminder_days_overdue: "%{days} day(s) overdue"
+  field_reminder_author_notification: "Remind author"
 

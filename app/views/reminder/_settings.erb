@@ -6,4 +6,9 @@
     <br/>
     <em><%= l(:text_comma_separated) %></em>
   </p>
+
+  <p>
+    <%= l(:field_reminder_author_notification) %>
+    <%= check_box_tag 'settings[reminder_author_notification]', settings['reminder_author_notification'], true %>
+  </p>
 </fieldset>
