@@ -40,10 +40,10 @@ class UserTest < ActiveSupport::TestCase
       end
 
       should "return author notification setting explicitly defined for user" do
-        assert_equal false, @user.reminder_author_notification
+        assert_equal false, @user.reminder_author_notification?
       end
 
-      should "return setting empty settings" do
+      should "return empty settings" do
         @user.update_attributes(:reminder_notification => "   ")
         assert_equal [], @user.reminder_notification_array
       end
