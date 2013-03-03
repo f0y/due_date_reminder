@@ -12,7 +12,7 @@ before_install:
   - export REPO_NAME=due_date_reminder
   # Plugin's name/directory
   - export PLUGIN_NAME=$REPO_NAME
-  - export BRANCH=master
+  - export BRANCH=2.3-stable
   - export USER_NAME=f0y
   - export TARGET_DIR="$HOME/redmine"
   - export CI_HOME=$HOME/build/$USER_NAME/$REPO_NAME
