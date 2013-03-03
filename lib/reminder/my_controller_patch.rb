@@ -8,7 +8,8 @@ module Reminder
         before_filter :check_reminder_input, :only => :account
 
         def check_reminder_input
-          if request.post? and !User.valid_reminder_notification?(params[:user][:reminder_notification])
+          if request.post? and not params[:user][:reminder_notification].nil? and
+              not User.valid_reminder_notification?(params[:user][:reminder_notification])
             flash[:error] = l(:error_reminder_notification_input)
             return redirect_to :action => 'account'
           end
