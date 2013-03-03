@@ -7,4 +7,6 @@ en:
   reminder_days_overdue: "%{days} day(s) overdue"
   field_reminder_author_notification: "Remind author"
   field_reminder_author_user_notification: "Remind if I am an author"
+  reminder_assigned_to: "Issues assigned to you"
+  reminder_author: "You are the author of these issues"
 

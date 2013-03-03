@@ -8,7 +8,7 @@ class IssueTest < ActiveRecord::TestCase
     setup do
       ActionMailer::Base.perform_deliveries = false
       @user = create(:user, :reminder_notification => '1,3')
-      @issue = create(:issue, :assigned_to => @user, :due_date => 1.day.from_now)
+      @issue = create(:issue, :assigned_to => @user, :due_date => 1.day.from_now.to_date)
     end
 
     should "calculate days before due date" do
@@ -17,7 +17,15 @@ class IssueTest < ActiveRecord::TestCase
 
     should "not remind if issue has no assignee" do
       @issue.update_attributes!(:assigned_to => nil)
+      @user.update_attributes!(:reminder_author_notification => false)
       assert !@issue.remind?
+    end
+
+    should "remind if author wants to" do
+      @issue.update_attributes!(:assigned_to => nil)
+      @user.update_attributes!(:reminder_author_notification => true)
+      @issue.update_attributes!(:author => @user)
+      assert @issue.remind?
     end
 
     should "remind in given day" do

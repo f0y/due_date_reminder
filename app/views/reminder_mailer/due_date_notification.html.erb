@@ -4,18 +4,21 @@
 
     <h2><%= "#{project.name}" %></h2>
     <ul>
-    <% issues.each do |issue| -%>
-        <%
-           name = "#{issue.tracker} ##{issue.id}: #{issue.subject}"
-           if issue.overdue?
-             caption = "! #{l(:reminder_days_overdue, :days => issue.days_before_due_date.abs)}! #{name}"
-           else
-             caption = "* #{name} (#{l(:field_due_date)}: #{issue.due_date})"
-           end
-        -%>
-        <li>
-        <%= caption %>
-        </li>
+    <% issues.keys.each do |attr| -%>
+        <h3><%= "#{l(ReminderMailer.issue_attrs[attr].to_sym)}" %></h3>
+        <% issues[attr].each do |issue| -%>
+            <%
+               name = "#{issue.tracker} ##{issue.id}: #{issue.subject}"
+               if issue.overdue?
+                 caption = "! #{l(:reminder_days_overdue, :days => issue.days_before_due_date.abs)}! #{name}"
+               else
+                 caption = "* #{name} (#{l(:field_due_date)}: #{issue.due_date})"
+               end
+            -%>
+            <li>
+            <%= caption %>
+            </li>
+        <% end -%>
     <% end -%>
     </ul>
 <% end -%>
