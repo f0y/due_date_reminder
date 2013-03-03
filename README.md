@@ -1,4 +1,4 @@
-# Due Date Reminder plugin for Redmine [![Build Status](https://secure.travis-ci.org/f0y/due_date_reminder.png)](http://travis-ci.org/f0y/due_date_reminder)
+# Due Date Reminder plugin for Redmine [![Build Status](https://travis-ci.org/f0y/due_date_reminder.png?branch=redmine-2.x)](https://travis-ci.org/f0y/due_date_reminder)
 
 Plugin for Redmine project that sends notification to assignee if due date is coming.
 

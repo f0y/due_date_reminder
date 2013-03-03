@@ -40,13 +40,20 @@ EOF
     ;;
   "postgres" )
     psql -c 'create database redmine_test;' -U postgres
-    cat > $TARGER_DIR/config/database.yml << EOF
+    cat > config/database.yml << EOF
 test:
   adapter: postgresql
   database: redmine_test
   username: postgres
 EOF
     ;;
+    "sqlite" )
+        cat > config/database.yml << EOF
+test:
+  adapter: sqlite3
+  database: db/redmine.sqlite3
+EOF
+    ;;
 esac
 
-bundle exec rake db:drop db:create db:migrate redmine:load_default_data redmine:plugins:migrate RAILS_ENV=test REDMINE_LANG=en
+bundle exec rake db:drop db:create db:migrate $LOAD_DEFAULT_DATA redmine:plugins:migrate RAILS_ENV=test REDMINE_LANG=en

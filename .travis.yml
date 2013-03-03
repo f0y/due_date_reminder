@@ -12,7 +12,6 @@ before_install:
   - export REPO_NAME=due_date_reminder
   # Plugin's name/directory
   - export PLUGIN_NAME=$REPO_NAME
-  - export BRANCH=2.3-stable
   - export USER_NAME=f0y
   - export TARGET_DIR="$HOME/redmine"
   - export CI_HOME=$HOME/build/$USER_NAME/$REPO_NAME
@@ -20,4 +19,7 @@ before_script: "./test/ci/before_script.sh"
 script: "./test/ci/script.sh"
 
 env:
-  - "DB=mysql2 BUNDLE_WITHOUT=rmagick:mysql:postgres:sqlite"
+  - "BRANCH=2.3-stable DB=mysql2 BUNDLE_WITHOUT=rmagick:mysql:postgres:sqlite LOAD_DEFAULT_DATA=redmine:load_default_data"
+  - "BRANCH=2.2-stable DB=sqlite BUNDLE_WITHOUT=rmagick:mysql:postgres:mysql2 LOAD_DEFAULT_DATA=redmine:load_default_data"
+  - "BRANCH=2.1-stable DB=sqlite BUNDLE_WITHOUT=rmagick:mysql:postgres:mysql2 LOAD_DEFAULT_DATA=redmine:load_default_data"
+  - "BRANCH=2.0-stable DB=sqlite BUNDLE_WITHOUT=rmagick:mysql:postgres:mysql2 LOAD_DEFAULT_DATA=''"
