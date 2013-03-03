@@ -5,7 +5,7 @@ module Reminder
       base.class_eval do
         # Same as typing in the class.
         unloadable # Send unloadable so it will not be unloaded in development.
-        safe_attributes 'reminder_notification'
+        safe_attributes 'reminder_notification', 'reminder_author_notification'
 
         def self.valid_reminder_notification?(value)
           value =~ /^(\A(\d+[\s,]*)+\z)|(\s)$/
@@ -25,6 +25,11 @@ module Reminder
       def reminder_notification
         attr = read_attribute(:reminder_notification)
         attr ||= Setting.plugin_due_date_reminder['reminder_notification']
+      end
+
+      def reminder_author_notification
+        attr = read_attribute(:reminder_author_notification)
+        attr ||= Setting.plugin_due_date_reminder['reminder_author_notification']
       end
 
     end
