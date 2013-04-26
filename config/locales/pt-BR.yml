@@ -1,8 +1,8 @@
 pt-BR:
   reminder_default_notification_settings: "Configurações de notificação padrão"
-  field_reminder_notification: "Avise-me sobre essa tarefas nesses dias"
-  error_reminder_notification_input: "Entrada errada. Você deve coloca ',' entre os valores."
+  field_reminder_notification: "Avise-me sobre estas tarefas nestes dias"
+  error_reminder_notification_input: "Entrada errada. Você deve colocar ',' entre os valores."
   reminder_mail_subject: "Lembrete: Você tem tarefas em atraso."
   reminder_mail_body: "Tarefas atribuídas a você que estão em atraso."
-  reminder_days_overdue: "%{dias} dia(s) em atraso."
+  reminder_days_overdue: "%{days} dia(s) em atraso."
 
