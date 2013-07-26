@@ -1,0 +1,25 @@
+language: ruby
+rvm:
+  - 1.9.3
+
+#Prevents installation of plugin's gemfile
+gemfile: non-existent-gemfile
+
+before_install:
+  # Git repo of the Redmine
+  - export MAIN_REPO="git://github.com/redmine/redmine.git"
+  # Name of your plugin's repo
+  - export REPO_NAME=due_date_reminder
+  # Plugin's name/directory
+  - export PLUGIN_NAME=$REPO_NAME
+  - export USER_NAME=f0y
+  - export TARGET_DIR="$HOME/redmine"
+  - export CI_HOME=$HOME/build/$USER_NAME/$REPO_NAME
+before_script: "./test/ci/before_script.sh"
+script: "./test/ci/script.sh"
+
+env:
+  - "BRANCH=2.3-stable DB=mysql2 BUNDLE_WITHOUT=rmagick:mysql:postgres:sqlite LOAD_DEFAULT_DATA=redmine:load_default_data"
+  - "BRANCH=2.2-stable DB=sqlite BUNDLE_WITHOUT=rmagick:mysql:postgres:mysql2 LOAD_DEFAULT_DATA=redmine:load_default_data"
+  - "BRANCH=2.1-stable DB=sqlite BUNDLE_WITHOUT=rmagick:mysql:postgres:mysql2 LOAD_DEFAULT_DATA=redmine:load_default_data"
+  - "BRANCH=2.0-stable DB=sqlite BUNDLE_WITHOUT=rmagick:mysql:postgres:mysql2 LOAD_DEFAULT_DATA=''"
