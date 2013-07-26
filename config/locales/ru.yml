@@ -5,4 +5,6 @@ ru:
   reminder_mail_subject: "Reminder: У вас есть задачи с истекающим сроком выполнения"
   reminder_mail_body: "Задачи, назначенные вам, у которых есть срок выполнения"
   reminder_days_overdue: "Просрочена на следующее кол-во дней - %{days}"
+  field_reminder_author_notification: "Уведомлять автора"
+  field_reminder_author_user_notification: "Уведомлять о тех, где я автор"
 

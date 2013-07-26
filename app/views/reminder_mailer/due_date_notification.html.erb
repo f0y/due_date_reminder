@@ -4,7 +4,9 @@
 
     <h2><%= "#{project.name}" %></h2>
     <ul>
-    <% issues.each do |issue| -%>
+    <% issues.keys.each do |attr| -%>
+        <h3><%= "#{l(ReminderMailer.issue_attrs[attr].to_sym)}" %></h3>
+        <% issues[attr].each do |issue| -%>
         <%
            name = "#{issue.tracker} ##{issue.id}: #{issue.subject}"
            if issue.overdue?
@@ -14,8 +16,9 @@
            end
         -%>
         <li>
-        <%= caption %>
+        <%= link_to caption,issue_url(issue) %>
         </li>
+    <% end -%>
     <% end -%>
     </ul>
 <% end -%>

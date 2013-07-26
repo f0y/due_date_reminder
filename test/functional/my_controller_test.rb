@@ -14,7 +14,8 @@ class MyControllerTest < ActionController::TestCase
   context "my controller" do
     setup do
       @user = User.new(:firstname => 'Ivan', :lastname => 'Ivanov', :mail => 'ivan@example.net',
-                       :status => User::STATUS_ACTIVE, :reminder_notification => '1,3,5')
+                       :status => User::STATUS_ACTIVE, :reminder_notification => '1,3,5',
+                       :reminder_author_notification => true)
       @user.login = 'ivan'
       @user.admin = true
       @user.save!
@@ -32,6 +33,22 @@ class MyControllerTest < ActionController::TestCase
       assert_equal '1,2,3,4', User.find(@user.id).reminder_notification
     end
 
+    should "not be an error if reminder notification not filled" do
+      post :account, :user => {
+          :reminder_author_notification => false
+      }
+      assert_equal User.find(@user.id), assigns(:user)
+      assert_nil flash[:error]
+    end
+
+    should "save reminder author notification settings" do
+      post :account, :user => {
+          :reminder_author_notification => false
+      }
+      assert_equal User.find(@user.id), assigns(:user)
+      assert_equal false, User.find(@user.id).reminder_author_notification?
+    end
+
     should "render input field for default notification setting" do
       @user.update_attributes!(:reminder_notification => nil)
       Setting.plugin_due_date_reminder = {'reminder_notification' => '1,2,9'}
@@ -39,10 +56,23 @@ class MyControllerTest < ActionController::TestCase
       assert_tag :input, :attributes => {:name => 'user[reminder_notification]', :value => '1,2,9'}
     end
 
+    should "render input field for default author notification setting" do
+      @user.update_attributes!(:reminder_author_notification => nil)
+      Setting.plugin_due_date_reminder = {'reminder_author_notification' => false}
+      get :account
+      assert_tag :input, :attributes => {:name => 'user[reminder_author_notification]', :value => 0}
+    end
+
     should "render input field for user notification setting" do
       get :account
       assert_tag :input, :attributes => {:name => 'user[reminder_notification]', :value => '1,3,5'}
     end
+
+    should "render input field for user author notification setting" do
+      get :account
+      assert_tag :input, :attributes => {:name => 'user[reminder_author_notification]', :value => 1}
+    end
+
 
     context "incorrect user input" do
 

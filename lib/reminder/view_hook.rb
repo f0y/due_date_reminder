@@ -17,6 +17,10 @@ module Reminder
                                     :value => context[:user].reminder_notification}
         <br/>
         <em>#{label_tag 'text_comma_separated', l(:text_comma_separated)}</em>
+
+        #{context[:form].check_box :reminder_author_notification,
+                            :label => :field_reminder_author_user_notification}
+
       </p>
       SRC
     end

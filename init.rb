@@ -9,6 +9,11 @@ Rails.configuration.to_prepare do
     User.send(:include, Reminder::UserPatch)
   end
 
+  require_dependency 'issue_category'
+  unless IssueCategory.included_modules.include? Reminder::IssueCategoryPatch
+    IssueCategory.send(:include, Reminder::IssueCategoryPatch)
+  end
+
   require_dependency 'issue'
   unless Issue.included_modules.include? Reminder::IssuePatch
     Issue.send(:include, Reminder::IssuePatch)
@@ -29,9 +34,9 @@ Redmine::Plugin.register :due_date_reminder do
   name 'Due Date Reminder plugin'
   author 'Oleg Kandaurov'
   description 'Sends notifications about due date'
-  version '0.3.2'
+  version '0.4'
   url 'https://github.com/f0y/due_date_reminder'
   author_url 'http://f0y.me'
-  requires_redmine :version => ['2.1.0', '2.1.1', '2.1.2', '2.1.3', '2.1.4', '2.1.5', '2.1.6', '2.1.7', '2.1.8', '2.1.9']
-  settings :default => {'reminder_notification' => '1,3,5'}, :partial => 'reminder/settings'
-end
+  requires_redmine :version_or_higher => '2.0.0'
+  settings :default => {'reminder_notification' => '1,3,5', 'category_reminder_notification' => '1,3,5' }, :partial => 'reminder/settings'
+  settings :default => {'reminder_notification' => '1,3,5', 'reminder_author_notification' => true}, :partial => 'reminder/settings'end

@@ -16,11 +16,21 @@ FactoryGirl.define do
 
   factory :issue do
     tracker_id 1
-    status_id 1
-    priority_id 6
-    author_id 1
+    association :status, factory: :issue_status
+    association :priority, factory: :issue_priority
+    association :author, factory: :user
     project_id 1
     subject "subject"
+  end
+
+  factory :issue_status do
+    sequence(:id) {|i| "#{i}"}
+    sequence(:name) {|i| "status#{i}"}
+  end
+
+  factory :issue_priority do
+    sequence(:id) {|i| "#{i}"}
+    sequence(:name) {|i| "priority#{i}"}
   end
 
 end

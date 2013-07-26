@@ -32,21 +32,45 @@ class SettingsControllerTest < ActionController::TestCase
       assert_template 'plugin'
     end
 
+
     should "render notification settings" do
       Setting.plugin_due_date_reminder = {'reminder_notification' => '1,2,3'}
       get :plugin, :id => 'due_date_reminder'
       assert_tag :input, :attributes => {:name => "settings[reminder_notification]", :value => '1,2,3'}
     end
 
+    should "render author notification" do
+      Setting.plugin_due_date_reminder = {'reminder_author_notification' => true}
+      get :plugin, :id => 'due_date_reminder'
+      assert_tag :input, :attributes => {:name => "settings[reminder_author_notification]", :value => true}
+    end
+
+
     should "render default notification settings" do
       get :plugin, :id => 'due_date_reminder'
       assert_tag :input, :attributes => {:name => "settings[reminder_notification]", :value => '1,3,5'}
     end
 
-    should "save new value" do
+    should "render default author notification settings" do
+      get :plugin, :id => 'due_date_reminder'
+      assert_tag :input, :attributes => {:name => "settings[reminder_author_notification]", :value => true}
+    end
+
+    should "save new notification value" do
       Setting.plugin_due_date_reminder = {'reminder_notification' => '1,2,3'}
       post :plugin, :id => 'due_date_reminder', :settings => {:reminder_notification => '1'}
       assert_equal '1', Setting.plugin_due_date_reminder['reminder_notification']
+    end
+
+    should "not be an error if reminder_notification does not present" do
+      post :plugin, :id => 'due_date_reminder', :settings => {:reminder_author_notification => false}
+      assert_nil flash[:error]
+    end
+
+    should "save new author notification value" do
+      Setting.plugin_due_date_reminder = {'reminder_author_notification' => true}
+      post :plugin, :id => 'due_date_reminder', :settings => {:reminder_author_notification => false}
+      assert_equal false, Setting.plugin_due_date_reminder['reminder_author_notification']
     end
 
     context "incorrect user input" do
