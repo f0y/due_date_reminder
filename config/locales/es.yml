@@ -1,0 +1,8 @@
+es:
+  reminder_default_notification_settings: "Preferencias por defecto"
+  field_reminder_notification: "Recordarme días antes que venzan"
+  error_reminder_notification_input: "Error de escritura. Deben ser valores separados por comas."
+  reminder_mail_subject: "Recordatorio: Tiene peticiones que pronto se vencen"
+  reminder_mail_body: "Peticiones asignadas a ud que pronto vencen"
+  reminder_days_overdue: "%{days} día(s) de vencida"
+
