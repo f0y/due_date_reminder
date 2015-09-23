@@ -30,14 +30,27 @@ class ReminderMailer < Mailer
 
 
   def self.find_issues
-    scope = Issue.open.scoped(:conditions => ["#{Issue.table_name}.assigned_to_id IS NOT NULL" +
-                                                  " AND #{Project.table_name}.status = #{Project::STATUS_ACTIVE}" +
-                                                  " AND #{Issue.table_name}.due_date IS NOT NULL" +
-                                                  " AND #{User.table_name}.status = #{User::STATUS_ACTIVE}"]
-    )
-    issues = scope.all(:include => [:status, :assigned_to, :project, :tracker])
-    issues.reject! { |issue| not (issue.remind? or issue.overdue?) }
-    issues.sort! { |first, second| first.due_date <=> second.due_date }
+    if Redmine::VERSION::MAJOR >= 3
+      scope = Issue.where(
+        "(#{Issue.table_name}.assigned_to_id IS NOT NULL OR #{Issue.table_name}.rpr_project_responsible_id IS NOT NULL)" +
+        " AND #{Project.table_name}.status = #{Project::STATUS_ACTIVE}" +
+        " AND #{Issue.table_name}.due_date IS NOT NULL" +
+        " AND #{User.table_name}.status = #{User::STATUS_ACTIVE}"
+      )
+      issues = scope.joins(:status, :assigned_to, :project, :tracker).to_a
+      issues.reject! { |issue| not (issue.remind? or issue.overdue?) }
+      issues.sort! { |first, second| first.due_date <=> second.due_date }
+    else
+      scope = Issue.open.scoped(:conditions => [
+        "(#{Issue.table_name}.assigned_to_id IS NOT NULL OR #{Issue.table_name}.rpr_project_responsible_id IS NOT NULL)" +
+        " AND #{Project.table_name}.status = #{Project::STATUS_ACTIVE}" +
+        " AND #{Issue.table_name}.due_date IS NOT NULL" +
+        " AND #{User.table_name}.status = #{User::STATUS_ACTIVE}"
+      ])
+      issues = scope.all(:include => [:status, :assigned_to, :project, :tracker])
+      issues.reject! { |issue| not (issue.remind? or issue.overdue?) }
+      issues.sort! { |first, second| first.due_date <=> second.due_date }
+    end
   end
 
   private
