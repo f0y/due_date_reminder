@@ -21,6 +21,9 @@ class ReminderMailer < Mailer
 
   def due_date_notification(user, projects)
     set_language_if_valid user.language
+    puts "User: #{user.name}. Setting for notification: #{user.reminder_notification}"
+    puts "Issues:"
+    projects.each { |project, issues| puts "Project: #{project.name}"; puts "Issues: #{issues.map(&:id)}"}
     @projects = projects
     @issues_url = url_for(:controller => 'issues', :action => 'index',
                           :set_filter => 1, :assigned_to_id => user.id,
