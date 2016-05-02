@@ -1,0 +1,8 @@
+zh:
+  reminder_default_notification_settings: "默认通知设置"
+  field_reminder_notification: "提醒即将在以下几天内到期的事务 "
+  error_reminder_notification_input: "输入错误！请使用半角逗号【,】分隔"
+  reminder_mail_subject: "提示：您当前有即将到期的事务待处理"
+  reminder_mail_body: "指派给您的已确定截止时间的事务"
+  reminder_days_overdue: "已逾期了 %{days} 天"
+
