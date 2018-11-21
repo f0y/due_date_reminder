@@ -32,7 +32,7 @@ class ReminderMailer < Mailer
   def self.find_issues
     if Redmine::VERSION::MAJOR >= 3
       scope = Issue.where(
-        "(#{Issue.table_name}.assigned_to_id IS NOT NULL OR #{Issue.table_name}.rpr_project_responsible_id IS NOT NULL)" +
+        "(#{Issue.table_name}.assigned_to_id IS NOT NULL)" +
         " AND #{Project.table_name}.status = #{Project::STATUS_ACTIVE}" +
         " AND #{Issue.table_name}.due_date IS NOT NULL" +
         " AND #{User.table_name}.status = #{User::STATUS_ACTIVE}"
@@ -42,7 +42,7 @@ class ReminderMailer < Mailer
       issues.sort! { |first, second| first.due_date <=> second.due_date }
     else
       scope = Issue.open.scoped(:conditions => [
-        "(#{Issue.table_name}.assigned_to_id IS NOT NULL OR #{Issue.table_name}.rpr_project_responsible_id IS NOT NULL)" +
+        "(#{Issue.table_name}.assigned_to_id IS NOT NULL)" +
         " AND #{Project.table_name}.status = #{Project::STATUS_ACTIVE}" +
         " AND #{Issue.table_name}.due_date IS NOT NULL" +
         " AND #{User.table_name}.status = #{User::STATUS_ACTIVE}"
